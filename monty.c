@@ -1,24 +1,23 @@
 #include "monty.h"
-global_var var_global;
+
 /**
- * main - driver function for monty program
- * @ac: int num of arguments
- * @av: opcode file
- * Return: 0
+ * pop - removes the top element of the stack
+ * @stack: double pointer to the stack
+ * @line_number: line number of the opcode
  */
-int main(int ac, char **av)
+void pop(stack_t **stack, unsigned int line_number)
 {
-	stack_t *stack;
+        stack_t *temp;
 
-	stack = NULL;
-	if (ac != 2)
-	{
-		fprintf(stderr, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
-	}
+        if (*stack == NULL)
+        {
+                fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
+                exit(EXIT_FAILURE);
+        }
 
-	read_file(av[1], &stack);
-    /* recordar liberar memorias */
-	free_dlistint(stack);
-	return (0);
+        temp = *stack;
+        *stack = (*stack)->next;
+        if (*stack != NULL)
+                (*stack)->prev = NULL;
+        free(temp);
 }
